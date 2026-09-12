@@ -683,6 +683,5 @@ st.download_button(
 
 st.divider()
 st.caption(
-    "Unified Mentor Internship Project | "
     "Machine Learning-Based Buyer Segmentation and Investment Profiling"
 )
