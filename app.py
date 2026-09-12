@@ -84,6 +84,53 @@ if "client_type" in df.columns:
 
 
 # ------------------------------------------------------------
+# BASIC LANDING INTERFACE
+# ------------------------------------------------------------
+
+if "dashboard_started" not in st.session_state:
+    st.session_state.dashboard_started = False
+
+if not st.session_state.dashboard_started:
+    st.markdown(
+        """
+        ## 👋 Welcome to the Buyer Intelligence Dashboard
+
+        This dashboard provides machine-learning-based buyer segmentation
+        and investment profiling for real estate market intelligence.
+
+        ### What you can explore
+        - 📊 Buyer segmentation and cluster distribution
+        - 💰 Investment behavior and portfolio patterns
+        - 🏡 Acquisition and financing behavior
+        - 🌍 Geographic buyer distribution
+        - 👥 Buyer demographics
+        - 💡 Segment-specific business recommendations
+        """
+    )
+
+    st.divider()
+
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Total Buyers", f"{len(df):,}")
+    col2.metric("Buyer Segments", f"{df['cluster'].nunique():,}")
+    col3.metric(
+        "Total Investment",
+        f"${df['total_investment'].sum():,.0f}"
+    )
+
+    st.markdown("### Ready to explore?")
+    st.write(
+        "Click the button below to open the interactive analytics dashboard."
+    )
+
+    if st.button("🚀 Explore Buyer Dashboard", type="primary"):
+        st.session_state.dashboard_started = True
+        st.rerun()
+
+    st.stop()
+
+
+# ------------------------------------------------------------
 # OPTIONAL SIDEBAR FILTERS
 # ------------------------------------------------------------
 # Filters are hidden initially so the dashboard opens with a clean
@@ -93,6 +140,10 @@ if "client_type" in df.columns:
 filtered_df = df.copy()
 
 with st.sidebar.expander("🔎 Buyer Filters", expanded=False):
+    if st.button("← Back to Overview"):
+        st.session_state.dashboard_started = False
+        st.rerun()
+
     st.caption("Filters are optional. Leave them empty to view all buyers.")
 
     # Country filter
